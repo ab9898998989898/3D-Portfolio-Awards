@@ -1,3 +1,4 @@
+// chat.js
 import { GoogleGenAI } from "@google/genai";
 
 export default async function handler(req, res) {
@@ -7,7 +8,6 @@ export default async function handler(req, res) {
 
     try {
         const { message } = req.body;
-        // In Vercel Serverless backend, environment variables don't need VITE_ prefix
         const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 
         if (!apiKey) {
@@ -17,7 +17,8 @@ export default async function handler(req, res) {
         const genAI = new GoogleGenAI({ apiKey });
 
         const response = await genAI.models.generateContent({
-            model: 'gemini-1.5-flash',
+            // 👇 FIX: Update to the latest supported model string
+            model: 'gemini-2.5-flash', 
             contents: message,
             config: {
                 systemInstruction: `You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
