@@ -45,7 +45,7 @@ export function Chatbot() {
         setIsLoading(true);
 
         try {
-            const apiKey = import.meta.env.GEMINI_API_KEY || import.meta.env.GOOGLE_API_KEY || "YOUR_API_KEY_HERE";
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY || "YOUR_API_KEY_HERE";
 
             if (apiKey === "YOUR_API_KEY_HERE") {
                 setMessages(prev => [...prev, { role: "bot", text: "Offline Mode: No API Key provided in .env (VITE_GEMINI_API_KEY)." }]);

@@ -1,0 +1,21 @@
+# Abdullah Nadeem Portfolio
+> Full-Stack MERN Developer & React Expert
+
+Abdullah Nadeem is a Full-Stack Web Developer specializing in MERN Stack, React.js, Next.js, and TypeScript. He builds high-performance, SEO-friendly web applications with clean architecture and exceptional user experiences.
+
+## Technical Skills
+- Frontend: React.js, Next.js, TypeScript, JavaScript, TailwindCSS, Three.js, GSAP 
+- Backend: Node.js, Express.js
+- Database: MongoDB, PostgreSQL
+- Specialties: MERN Stack, SEO, Digital Marketing, Immersive Web Experiences, 3D Web Graphics, UI/UX
+
+## Sections
+As a single-page immersive 3D portfolio, the site includes:
+- Hero Section
+- Services Summary and details
+- About Me section
+- Works and portfolio projects
+- Contact section
+
+## Contact
+- Website: https://abdullahpk.site
