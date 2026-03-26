@@ -61,6 +61,6 @@ User says: Hello.` }]
 
     } catch (error) {
         console.error("CRASH REPORT:", error);
-        return res.status(200).json({ reply: "I am having a connection error. Please check the terminal or Vercel logs for the 'CRASH REPORT'." });
+        return res.status(200).json({ reply: `Backend Crash: ${error.message || String(error)}` });
     }
 }
