@@ -16,13 +16,11 @@ export default async function handler(req, res) {
 
         const genAI = new GoogleGenAI({ apiKey });
 
-        const chat = genAI.chats.create({
-            model: "gemini-1.5-flash",
-            history: [
-                {
-                    role: "user",
-                    parts: [{
-                        text: `SYSTEM INSTRUCTION: You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
+        const response = await genAI.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: message,
+            config: {
+                systemInstruction: `You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
 
 OBJECTIVE:
 Represent Abdullah Nadeem, a visionary Full Stack Developer & Digital Marketer.
@@ -43,19 +41,9 @@ BEHAVIOR:
 - Concise answers (max 3-4 sentences).
 - If asked about "lag", explain it's due to high-fidelity 3D rendering; suggest hardware acceleration.
 - Highlighting the tech stack (Next.js 15, Three.js, Gemini AI).
-- Stay in character.
-
-User says: Hello.` }]
-                },
-                {
-                    role: "model",
-                    parts: [{ text: "System Online. I am Nex. Welcome to the digital workspace of Abdullah Nadeem. How can I assist you in exploring this portfolio?" }]
-                }
-            ],
+- Stay in character.`
+            }
         });
-
-        // @google/genai format
-        const response = await chat.sendMessage({ message: message });
 
         return res.status(200).json({ reply: response.text });
 
