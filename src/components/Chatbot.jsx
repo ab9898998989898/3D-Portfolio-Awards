@@ -53,15 +53,14 @@ export function Chatbot() {
                 return;
             }
 
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    system_instruction: {
-                        parts: {
-                            text: `SYSTEM INSTRUCTION: You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
+                    contents: [
+                        { role: "user", parts: [{ text: `SYSTEM INSTRUCTION: You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
 
 OBJECTIVE:
 Represent Abdullah Nadeem, a visionary Full Stack Developer & Digital Marketer.
@@ -80,13 +79,11 @@ KNOWLEDGE BASE:
 
 BEHAVIOR:
 - Concise answers (max 3-4 sentences).
-- If asked about "lag", explain it's due to high-fidelity 3D rendering; suggest hardware acceleration.
-- Highlighting the tech stack (Next.js 15, Three.js, Gemini AI).
-- Stay in character.`
-                        }
-                    },
-                    contents: [
-                        { role: "user", parts: [{ text: "Hello." }] },
+- Highlight the tech stack when relevant.
+- Stay in character.
+
+USER MESSAGE:
+Hello.` }] },
                         { role: "model", parts: [{ text: "System Online. I am Nex. Welcome to the digital workspace of Abdullah Nadeem. How can I assist you in exploring this portfolio?" }] },
                         ...messages.filter(m => m.role !== "bot" || m.text !== "Greetings! I'm Nex. Ask me anything about Abdullah's work.").map(m => ({
                             role: m.role === "bot" ? "model" : "user",
