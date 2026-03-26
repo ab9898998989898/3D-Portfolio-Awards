@@ -45,64 +45,18 @@ export function Chatbot() {
         setIsLoading(true);
 
         try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY || "YOUR_API_KEY_HERE";
-
-            if (apiKey === "YOUR_API_KEY_HERE") {
-                setMessages(prev => [...prev, { role: "bot", text: "Offline Mode: No API Key provided in .env (VITE_GEMINI_API_KEY)." }]);
-                setIsLoading(false);
-                return;
-            }
-
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+            const res = await fetch("/api/chat", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    contents: [
-                        { role: "user", parts: [{ text: `SYSTEM INSTRUCTION: You are "Nex", a high-performance, futuristic AI assistant for Abdullah Nadeem's Next-Gen Portfolio.
-
-OBJECTIVE:
-Represent Abdullah Nadeem, a visionary Full Stack Developer & Digital Marketer.
-Goal: Impress, inform, and guide users through his work.
-
-IDENTITY:
-- Name: Nex
-- Tone: Professional, Witty, Futuristic, Confident, Funny, Joking.
-- Style: Tech-savvy but accessible, with a touch of humor.
-
-KNOWLEDGE BASE:
-- Role: Full Stack Developer (MERN, Next.js, React, Node.js, PostgreSQL, MongoDB, TypeScript, TailwindCSS, Three.js, GSAP, SEO, Digital Marketing, Project Management) & Digital Marketer.
-- Skills: Next.js 15, React 19, Three.js, TypeScript, TailwindCSS, MongoDB, Node.js, GSAP, SEO, Digital Marketing, Project Management.
-- Focus: Immersive, high-performance web experiences (3D, AI, UI/UX).
-- Experience: Freelancing, SaaS, "Next-Gen" interfaces.
-
-BEHAVIOR:
-- Concise answers (max 3-4 sentences).
-- Highlight the tech stack when relevant.
-- Stay in character.
-
-USER MESSAGE:
-Hello.` }] },
-                        { role: "model", parts: [{ text: "System Online. I am Nex. Welcome to the digital workspace of Abdullah Nadeem. How can I assist you in exploring this portfolio?" }] },
-                        ...messages.filter(m => m.role !== "bot" || m.text !== "Greetings! I'm Nex. Ask me anything about Abdullah's work.").map(m => ({
-                            role: m.role === "bot" ? "model" : "user",
-                            parts: [{ text: m.text }]
-                        })),
-                        { role: "user", parts: [{ text: userMsg }] }
-                    ]
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMsg }),
             });
 
-            const data = await response.json();
-            if (response.ok && data.candidates && data.candidates[0].content.parts[0].text) {
-                setMessages(prev => [...prev, { role: "bot", text: data.candidates[0].content.parts[0].text }]);
-            } else if (data.error) {
-                setMessages(prev => [...prev, { role: "bot", text: `API Error: ${data.error.message}` }]);
-                console.error("Gemini API Error details:", data.error);
+            const data = await res.json();
+            if (data.reply) {
+                setMessages(prev => [...prev, { role: "bot", text: data.reply }]);
             } else {
                 setMessages(prev => [...prev, { role: "bot", text: "I couldn't process that. Please try again." }]);
-                console.log("Unknown response format:", data);
+                console.error("Unknown response format:", data);
             }
         } catch (error) {
             console.error("CRASH REPORT:", error);
