@@ -98,10 +98,14 @@ BEHAVIOR:
             });
 
             const data = await response.json();
-            if (data.candidates && data.candidates[0].content.parts[0].text) {
+            if (response.ok && data.candidates && data.candidates[0].content.parts[0].text) {
                 setMessages(prev => [...prev, { role: "bot", text: data.candidates[0].content.parts[0].text }]);
+            } else if (data.error) {
+                setMessages(prev => [...prev, { role: "bot", text: `API Error: ${data.error.message}` }]);
+                console.error("Gemini API Error details:", data.error);
             } else {
                 setMessages(prev => [...prev, { role: "bot", text: "I couldn't process that. Please try again." }]);
+                console.log("Unknown response format:", data);
             }
         } catch (error) {
             console.error("CRASH REPORT:", error);
